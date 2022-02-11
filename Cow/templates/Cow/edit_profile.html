@@ -1,0 +1,158 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>AddCow</title>
+{% endblock title %}
+{% block style %}
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Edit Profile</h4>
+    </div>
+</div>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+        <h3 class="card-title">Admin Informations</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-img-wrap">
+                    
+                    {% if pic %}
+                    <img class="inline-block" src="{{pic.url}}" id="blah" alt="user">
+                    {% else %}
+                    <img class="inline-block" src="" id="blah" alt="user">
+                    {% endif %}
+                   
+                    <div class="fileupload btn">
+                        <span class="btn-text">edit</span>
+                        <input class="upload" type="file" name="img" onchange="readURL(this);">
+
+
+                    </div>
+                </div>
+                <div class="profile-basic">
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">Username</label>
+                                {{supervisor_form.username|add_class:"form-control floating"}}
+                                {{supervisor_form.username.errors}}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">First Name</label>
+                                {{supervisor_form.first_name|add_class:"form-control floating"}}
+                                {{supervisor_form.first_name.errors}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">Last Name</label>
+                                {{supervisor_form.last_name|add_class:"form-control floating"}}
+                                {{supervisor_form.last_name.errors}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">Email</label>
+                                {{supervisor_form.email|add_class:"form-control floating"}}
+                                {{supervisor_form.email.errors}}
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">Phone Number</label>
+                                {{supervisor_profile_form.phone|add_class:"form-control floating "}}
+                                {{supervisor_profile_form.phone.errors}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus select-focus">
+                                <label class="focus-label">Gendar</label>
+                                {{supervisor_profile_form.gender|add_class:"form-control floating "}}
+                                {{supervisor_profile_form.gender.errors}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus select-focus">
+                                <label class="focus-label">Adrress</label>
+                                {{supervisor_profile_form.address|add_class:"form-control floating "}}
+                                {{supervisor_profile_form.address.errors}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">Birth Date</label>
+                                <div class="cal-icon">
+                                    {{supervisor_profile_form.date_of_birth|add_class:"form-control floating datetimepicker"}}
+                                    {{supervisor_profile_form.date_of_birth.errors}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">Join Date</label>
+                                <div class="cal-icon">
+                                    {{supervisor_profile_form.date_of_join|add_class:"form-control floating datetimepicker"}}
+                                    {{supervisor_profile_form.date_of_join.errors}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center m-t-20">
+            
+            <a class="btn btn-primary submit-btn" href="{% url 'Dashboard' %}" >Cancel</a>
+            <input class="btn btn-primary submit-btn" type="submit" value="Save">
+        </div>
+    </div>
+
+    <script>
+        x = document.getElementById("id_date_of_birth").value;
+        y = document.getElementById("id_date_of_join").value;
+        if(x != " "){
+            const d = x.split('-')
+            const date_of_birth = d[2]+"/"+d[1]+"/"+d[0];
+            $('#id_date_of_birth').attr('value',date_of_birth);
+        }
+        if(y != " "){
+            const d = y.split('-')
+            const join_date = d[2]+"/"+d[1]+"/"+d[0];
+            $('#id_date_of_join').attr('value',join_date);
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(200);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+
+    {% endblock content %}

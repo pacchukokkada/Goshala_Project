@@ -1,0 +1,127 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}
+<title>Monthly Attendance</title>
+{% endblock title %}
+
+{% block style %}
+<style>
+    .half {
+        color: rgb(6, 99, 229);
+        font-weight: bold;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Attendance Sheet</h4>
+    </div>
+</div>
+<form method="get">
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">Year</label>
+                <select class="select floating" id="date-dropdown" name="year">
+
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">Month</label>
+                <select class="select floating" name="month">
+                    <option selected value="">Select Month</option>
+                    <option value='1'>Janaury</option>
+                    <option value='2'>February</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <input type="submit" class="btn btn-success btn-block" value="Search">
+        </div>
+    </div>
+</form>
+<div class="row">
+    
+    {% if days.1 is None %}
+        <h3>No attendance record found</h3>
+    {% else %}
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table mb-0">
+                <thead>
+                    <tr>
+                        <th>Date--> <br> Employee</th>
+                        {% for day in days%}
+                        <th class="text-center">{{day}}</th>
+                        {%endfor%}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key,value in attender.items %}
+                    <tr>
+                        <td>{{key}}</td>
+                        {% for attend in value %}
+                        <td class="text-center">
+                            {% if attend == "full" %}
+                            <i class="fa fa-check text-success"></i>
+                            {% elif attend == "half" %}
+                            <!-- <div class="half-day"><span class="first-off"><i
+                                class="fa fa-check text-success"></i></span> <span class="first-off"><i
+                                class="fa fa-close text-danger"></i></span>
+                            </div> -->
+                            <span class="half">h</span>
+                            {% elif attend == "leave" %}
+                            <i class="fa fa-close text-danger"></i>
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                        {%endfor%}
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    let dateDropdown = document.getElementById('date-dropdown');
+
+    let currentYear = new Date().getFullYear();
+    let earliestYear = 2000;
+
+    while (currentYear >= earliestYear) {
+        let dateOption = document.createElement('option');
+        dateOption.text = currentYear;
+        dateOption.value = currentYear;
+        dateDropdown.add(dateOption);
+        currentYear -= 1;
+    }
+</script>
+{% endblock javascript %}

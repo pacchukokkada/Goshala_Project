@@ -1,0 +1,16 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>AddCow</title>
+{% endblock title %}
+
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+</form>
+
+{% endblock content %}

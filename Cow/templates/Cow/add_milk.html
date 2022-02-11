@@ -1,0 +1,99 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Add Milk</title>
+
+
+{% endblock title %}
+
+{% block style %}
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Add Milk Producton/Distribution Information</h4>
+    </div>
+</div>
+{% for error in form.non_field_errors  %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> {{ error }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<div class="row" style="margin-left: auto;">
+    <div class="col-md-8">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title">Milk Information</h4>
+            <form action="" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+                
+                {% if fm is form.date %}
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                    <div class="cal-icon">
+                    {{fm|add_class:"form-control datetimepicker"}}
+                </div>
+                    {{fm.errors}}
+                </div>
+                {% else %}   
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                    {{fm|add_class:"form-control"}}
+                    {{fm.errors}}
+                </div>
+                {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary m-3">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    x = document.getElementById('id_date').value;
+    if(x != " "){
+        const d = x.split('-')
+        const dt = d[2]+"/"+d[1]+"/"+d[0];
+        $('#id_date').attr('value',dt);
+        }
+    // document.getElementById('id_local_sale').type = 'text';
+    // document.getElementById('id_local_sale_income').type = 'text';
+    // document.getElementById('id_dairy_sale').type = 'text';
+    // document.getElementById('id_dairy_sale_income').type = 'text';
+    // document.getElementById('id_calf_use').type = 'text';
+    // document.getElementById('id_employee_use').type = 'text';
+    
+    $("form input[name='local_sale']").keyup(function () { 
+        var local_sale= document.getElementById('id_local_sale').value;
+        console.log(local_sale)
+        if (local_sale === "0") {
+            document.getElementById('id_local_sale_income').value = 0;
+        }
+        else{
+            document.getElementById('id_local_sale_income').value = " ";
+        }
+    });
+    $("form input[name='dairy_sale']").keyup(function () { 
+        var dairy_sale= document.getElementById('id_dairy_sale').value;
+        console.log("hi")
+        if (dairy_sale === "0") {
+            document.getElementById('id_dairy_sale_income').value = 0;
+        }
+        else{
+            document.getElementById('id_dairy_sale_income').value = " ";
+        }
+    });
+</script>
+{% endblock content %}

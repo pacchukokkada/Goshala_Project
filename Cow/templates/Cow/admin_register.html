@@ -1,0 +1,181 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Add Admin</title>
+
+
+{% endblock title %}
+
+{% block style %}
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Admin Registration</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Show_admin' %}" class="btn btn-primary btn-rounded float-right">Back</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title">Admin Information</h4>
+            <form action="" method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Username</label>
+                            <div class="col-md-9">
+                                {{supervisor_form.username|add_class:"form-control"}}
+                                {{supervisor_form.username.errors}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Email</label>
+                            <div class="col-md-9">
+                                {{supervisor_form.email|add_class:"form-control"}}
+                                {{supervisor_form.email.errors}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Password</label>
+                            <div class="col-md-9">
+                                {{supervisor_form.password1|add_class:"form-control"}}
+                                {{supervisor_form.password1.errors}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Repeat Password</label>
+                            <div class="col-md-9">
+                                {{supervisor_form.password2|add_class:"form-control"}}
+                                {{supervisor_form.password2.errors}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+
+                            <label class="col-md-3 col-form-label">First Name</label>
+                            <div class="col-md-9">
+                                {{supervisor_form.first_name|add_class:"form-control"}}
+                                {{supervisor_form.first_name.errors}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Last Name</label>
+                            <div class="col-md-9">
+                                {{supervisor_form.last_name|add_class:"form-control"}}
+                                {{supervisor_form.last_name.errors}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+
+                            <label class="col-md-3 col-form-label">Gender</label>
+                            <div class="col-md-9">
+
+                                <div class="form-check form-check-inline" >
+                                    <input class="form-check-input" type="radio" name="gender" id="gender_male"
+                                            value="male" checked>
+                                    <label class="form-check-label" for="gender_male">
+                                        Male
+                                    </label>
+                                    <!-- {{supervisor_profile_form.gender|add_class:"form-control"}}
+                                    {{supervisor_profile_form.gender.errors}} -->
+
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="gender_female"
+                                        value="female">
+                                    <label class="form-check-label" for="gender_female">
+                                        Female
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Phone Number</label>
+                            <div class="col-md-9">
+                                {{supervisor_profile_form.phone|add_class:"form-control"}}
+                                {{supervisor_profile_form.phone.errors}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Address </label>
+                            <div class="col-md-9">
+                                {{supervisor_profile_form.address|add_class:"form-control"}}
+                                {{supervisor_profile_form.address.errors}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Profile Photo</label>
+                            <div class="col-md-9">
+                                {{supervisor_profile_form.profile_pic|add_class:"form-control"}}
+                                {{supervisor_profile_form.profile_pic.errors}}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Date Of Birth</label>
+                            <div class="col-md-9">
+                                <div class="cal-icon">
+                                    {{supervisor_profile_form.date_of_birth|add_class:"form-control datetimepicker"}}
+                                </div>
+                                {{supervisor_profile_form.date_of_birth.errors}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Date of Join</label>
+                            <div class="col-md-9">
+                                <div class="cal-icon">
+                                    {{supervisor_profile_form.date_of_join|add_class:"form-control datetimepicker"}}
+                                </div>
+                                {{supervisor_profile_form.date_of_join.errors}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+<!-- 
+{% for sfm in supervisor_form %}
+<div class="form-group">
+    <label>{{sfm.label}}</label>
+    {{sfm|add_class:"form-control"}}
+    {{sfm.errors}}
+</div>
+{% endfor %}
+    
+{% for spfm in supervisor_profile_form %}
+<div class="form-group">
+    <label>{{spfm.label}}</label>
+    {{spfm|add_class:"form-control"}}
+    {{spfm.errors}}
+</div>
+{% endfor %} -->

@@ -1,0 +1,67 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Add Production</title>
+
+
+{% endblock title %}
+
+{% block style %}
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Add/Upadte Production</h>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Show_production' %}" class="btn btn-primary btn-rounded float-right">Productions</a>
+    </div>
+</div>
+
+<div class="row" style="margin-left: auto;">
+    <div class="col-md-8">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title">Enter Production Information</h4>
+            <form action="" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+                
+                {% if fm is form.date %}
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                    <div class="cal-icon">
+                    {{fm|add_class:"form-control datetimepicker"}}
+                    </div>
+                    {{fm.errors}}
+                </div>
+                {% else %}
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                    {{fm|add_class:"form-control"}}
+                    {{fm.errors}}
+                </div>
+                {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary m-3">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var x = document.getElementById('id_date').value;
+    const d = x.split('-');
+    var dt = d[2]+"/"+d[1]+"/"+d[0] 
+    $('#id_date').attr('value',dt);
+    
+</script>
+{% endblock content %}

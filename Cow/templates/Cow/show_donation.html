@@ -1,0 +1,155 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %}
+<title>Show Donations</title>
+{% endblock title %}
+
+
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message.tags}}!</strong> {{message}} 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Donations</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Add_donation' %}" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Donation</a>
+    </div>
+</div>
+<form action="" method="get">
+    <div class="row filter-row">
+        
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus ">
+                <label class="focus-label">Donar Name</label>
+                <input type="text" class="form-control floating" onkeyup="myFunction()" id="myInput">
+               
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">Date</label>
+                <div class="cal-icon">
+                {% render_field donation_filter.form.date class="form-control floating datetimepicker" %}
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">From</label>
+                <div class="cal-icon">
+                    <input name="start_date" class="form-control floating datetimepicker" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">To</label>
+                <div class="cal-icon">
+                    <input name="end_date" class="form-control floating datetimepicker" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <!-- <a href="#" class="btn btn-success btn-block"> Search </a> -->
+            <input type="submit" class="btn btn-success btn-block" value="Search">
+        </div>
+    
+    </div>
+    </form>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped custom-table mb-0 " id="myTable">
+                <thead>
+                    <tr>
+                        <th class="text-left">Donar Name</th>
+                        <th class="text-center">Phone</th>
+                        <th class="text-center">Amount</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Recipt</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for donation in donation_filter.qs  %}
+                    <tr>
+                        <td class="text-left"><strong>{{donation.donar_name}}</strong></td>
+                        <td class="text-center">{{donation.phone}}</td>
+                        <td class="text-center">{{donation.amount}}</td>
+                        <td class="text-center">{{donation.date}}</td>
+                        <td class="text-center"><a href="{% url 'Print_donation' donation.id %}" target="#">Print</a></td>
+                        <td class="text-right">
+                            <div class="dropdown dropdown-action">     
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    {% if expense.item == "hindi" %}
+                                    <a class="dropdown-item" href=""><i class="fa fa-pencil m-r-5"></i>Can't Edit!</a>
+                                    <a  id="{{donation.id}}" class="dropdown-item" href="" data-toggle="modal" on data-target="#delete_record"><i class="fa fa-trash-o m-r-5"></i>Can't Delete!</a>
+                                    {% else %}
+                                    <a class="dropdown-item" href="{% url 'Update_donation' donation.id %}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a onclick="f2(this.id); return false;" id="{{donation.id}}" class="dropdown-item" href="#" data-toggle="modal" on data-target="#delete_record"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    {% endif %}
+                                   
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                        
+                   
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    var record_id = ''
+    function f2(r_id){
+        record_id = r_id;
+
+    }
+    function f1(){
+        document.getElementById("delete_a").href =  "/admin_dashboard/donation/delete/"+window.record_id+"/"
+    }
+    function myFunction() {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+</script>
+{% endblock javascript %}

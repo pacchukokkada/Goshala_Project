@@ -1,0 +1,161 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %}
+<title>Profile</title>
+{% endblock title %}
+
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message.tags}}!</strong> {{message}} 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+<div class="row">
+    <div class="col-sm-7 col-6">
+        <h4 class="page-title">{{emp.name}} Profile</h4>
+    </div>
+
+    <div class="col-sm-5 col-6 text-right m-b-30">
+        <a href="{% url 'Employee_update' emp.id %}" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit
+            Profile</a>
+    </div>
+</div>
+
+<div class="card-box profile-header">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="profile-view">
+                <div class="profile-img-wrap">
+                    <div class="profile-img">
+                        {% if emp.profile_pic %}
+                        <a href="#"><img class="avatar" src="{{emp.profile_pic.url}}" alt=""></a>
+                        {% else %}
+                        <a href="#"><img class="avatar" src="{% static 'Cow/assets/img/profile_photo.png' %}" alt=""></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="profile-basic">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="profile-info-left">
+                                <h3 class="user-name m-t-0 mb-0">{{emp.name}}</h3>
+                                <small class="text-muted">Worker</small>
+                                <div class="staff-id">Employee ID : EP-00{{emp.id}}</div>
+                                <!-- <div class="staff-msg"><a href="chat.html" class="btn btn-primary">Send Message</a></div> -->
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <ul class="personal-info">
+                                <li>
+                                    <span class="title">Phone:</span>
+                                    <span class="text"><a href="">{{emp.phone}}</a></span>
+                                </li>
+                                <li>
+                                    <span class="title">Gender:</span>
+                                    <span class="text">{{emp.gender}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">DOB:</span>
+                                    <span class="text">{{emp.date_of_birth}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">DOJ:</span>
+                                    <span class="text">{{emp.join_date}}</span>
+                                </li>
+                                <!-- <li>
+                                    <span class="title">Gender:</span>
+                                    <span class="text">Female</span>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="profile-tabs">
+    <ul class="nav nav-tabs nav-tabs-bottom">
+        <li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">About</a></li>
+        <!-- <li class="nav-item"><a class="nav-link" href="#bottom-tab2" data-toggle="tab">Attendance</a></li>
+        <li class="nav-item"><a class="nav-link" href="#bottom-tab3" data-toggle="tab">Salary</a></li> -->
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="about-cont">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-box">
+                        <h3 class="card-title">Address Informations</h3>
+                        <!-- <div class="experience-box">
+                <ul class="experience-list">
+                    <li>
+                        <div class="experience-user">
+                            <div class="before-circle"></div>
+                        </div>
+                        <div class="experience-content">
+                            <div class="timeline-content">
+                                <a href="#/" class="name">International College of Medical Science (UG)</a>
+                                <div>MBBS</div>
+                                <span class="time">2001 - 2003</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="experience-user">
+                            <div class="before-circle"></div>
+                        </div>
+                        <div class="experience-content">
+                            <div class="timeline-content">
+                                <a href="#/" class="name">International College of Medical Science (PG)</a>
+                                <div>MD - Obstetrics & Gynaecology</div>
+                                <span class="time">1997 - 2001</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div> -->
+                        <ul class="personal-info">
+                            <li>
+                                <span class="title">Home:</span>
+                                <span class="text">{{emp.home}}</span>
+                            </li>
+                            <li>
+                                <span class="title">Village:</span>
+                                <span class="text">{{emp.village}}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-box">
+                        <h3 class="card-title">Other Informations</h3>
+                        <ul class="personal-info">
+                            <li>
+                                <span class="title">Aadhaar Card Number:</span>
+                                <span class="text"><a href="">{{emp.aadhaar_no}}</a></span>
+                            </li>
+                            <li>
+                                <span class="title">Bank Account Number:</span>
+                                <span class="text">{{emp.bank_account_no}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="bottom-tab2">
+
+        </div>
+        <div class="tab-pane" id="bottom-tab3">
+            Tab content 3
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    {% block title %}
+
+    {% endblock title %}
+
+
+    {% block style %}
+
+    {% endblock style %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/bootstrap.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/font-awesome.min.css' %}  ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/bootstrap-datetimepicker.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/style.css' %} ">
+    <link rel="stylesheet" type="text/css" href=" {% static 'Cow/assets/css/dataTables.bootstrap4.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/fullcalendar.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/selectize.bootstrap3.min.css' %}">
+    
+    <script src="{% static 'Cow/assets/js/selectize.jquery.min.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/selectize.min.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/html5shiv.min.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/respond.min.js' %} "></script>
+    <style>
+        body{
+            background-image: linear-gradient(rgba(255, 255, 255, 0.215), rgba(255, 255, 255, 0.215)), url("{%static 'Cow/assets/img/farm.jpg' %}");
+            /* background: url("{%static 'Cow/assets/img/farm.jpg' %}"); */
+            background-repeat: repeat;
+            background-size: cover;
+        }
+        .sidebar{
+           opacity: 0.8;
+
+        }
+        .table-responsive{
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left" >
+                <a href="#" class="logo">
+                    <img src="{% static 'Cow/assets/img/Kamadhenu.png' %} " width="120" height="100" alt=""> <span style="font-weight: bolder; margin-left: 0%;">Kamadhenu</span>
+                </a>
+            </div>
+            <a id="toggle_btn" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+            <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar"><i class="fa fa-bars"></i></a>
+            <ul class="nav user-menu float-right">
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        <span class="user-img"><img class="rounded-circle" src="{% static 'Cow/assets/img/user.jpg' %} "
+                                width="40" alt="Admin">
+                            <span class="status online"></span></span>
+                        <span>Admin</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'Admin_profile' %}">My Profile</a>
+                        <a class="dropdown-item" href="{% url 'Admin_update' %}">Edit Profile</a>
+                        <a class="dropdown-item" href="{% url 'Password_change' %}">Change Password</a>
+                        <a class="dropdown-item" href="{% url 'Admin_logout' %}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="dropdown mobile-user-menu float-right">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                        class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="{% url 'Admin_profile' %}">My Profile</a>
+                    <a class="dropdown-item" href="{% url 'Admin_update' %}">Edit Profile</a>
+                    <a class="dropdown-item" href="{% url 'Password_change' %}">Change Password</a>
+                    <a class="dropdown-item" href="{% url 'Admin_logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">Main</li>
+                        <li>
+                            <a href="{% url 'Dashboard' %}"><i><img
+                                        src="https://img.icons8.com/wired/26/000000/paint-palette.png" /></i>
+                                <span>Dashboard</span></a>
+                        </li>  
+                        <li class="submenu">
+                            <a href="#"><i><img src="https://img.icons8.com/wired/26/000000/cow.png" /></i>
+                                <span>Cattle </span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="{% url 'Display_cow' %}">Cattle</a></li>
+                                <li><a href="{% url 'Show_sold_cow' %}">Sold Cattle </a></li>
+                                <li><a href="{% url 'Show_dead_cow' %}">Dead Cattle </a></li>
+                            </ul>
+                        </li>
+
+                        <li class="submenu">
+                            <a href="#"><i><img src="https://img.icons8.com/dotty/26/000000/employee-card.png" /></i>
+                                <span> Employees </span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="{% url 'Display_emp' %}">Employees List</a></li>
+                                <li><a href="{% url 'Emp_attendance'  %}">Attendance</a></li>
+                                <li><a href="{% url 'Emp_attendance_list' %}">Attendance List </a></li>
+                                <li><a href="{% url 'Emp_montly_attendance' %}">Monthly Attendance</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i><img src="https://img.icons8.com/ios/26/000000/cost.png"/></i>
+                                <span> Income/Expense </span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="{% url 'Show_income' %}">Income </a></li>
+                                <li><a href="{% url 'Show_expense' %}">Expense</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="{% url 'Inbox' %}"><i class="fa fa-envelope"></i>
+                            <span> Inbox</span></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'Show_milk' %}"><i><img src="https://img.icons8.com/metro/26/000000/milk-bottle.png" /></i>
+                            <span> Milk</span></a>
+                        </li>
+                        <li >
+                            <a href="{% url 'Cow_health_record_list' %}"><i><img src="https://img.icons8.com/dotty/26/000000/health-book.png"/></i>
+                                <span> Health </span> </a>
+                        </li>
+
+                        <li class="submenu">
+                            <a href="#"><i><img src="https://img.icons8.com/dotty/26/000000/vegetables-bag.png"/></i>
+                                <span> Products </span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="{% url 'Show_product' %}">Products</a></li>
+                                <li><a href="{% url 'Show_production' %}">Producton</a></li>
+                                <li><a href="{% url 'Show_product_use' %}">Product Usage</a></li>
+                                <li><a href="{% url 'Product_sale' 1 %}">Product Sale</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i><img src="https://img.icons8.com/dotty/26/000000/cement-bag.png"/></i> <span>Feed</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                    <li><a href="{% url 'Feed_list' %}"><span>Feeds</span></a></li>
+                                    <li><a href="{% url 'Supplier_list' %}"><span>Feeds Suppliers</span></a></li>
+                                    <li><a href="{% url 'Feed_stock_entry_list' %} "><span>Stock Entry</span></a></li>
+                                    <li><a href="{% url 'Show_feed_usage' %}">Feed Usage</a></li>
+                            </ul>
+                        </li>
+                        <li >
+                            <a href="{% url 'Display_breed' %}"><i><img src="https://img.icons8.com/pastel-glyph/26/000000/cow-breed.png"/></i>
+                                <span> Breeds </span> </a>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:void(0);"><i><img src="https://img.icons8.com/dotty/27/000000/dna-helix.png"/></i> <span>Breeding</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                    <li><a href="{% url 'Show_breeding' %}"><span>Show Breeding</span></a></li>
+                                    <li><a href="{% url 'Show_pregnant_cow' %} "><span>Pregnant Cow</span></a></li>
+                            </ul>
+                        </li>
+
+                        <li class="submenu">
+                            
+                           
+                            <a href="#"><i><img src="https://img.icons8.com/wired/26/000000/book.png" /></i> <span>
+                                Payroll </span> <span class="menu-arrow"></span></a>
+                           
+                            <ul style="display: none;">
+                                <li><a href="{% url 'Employee_salary' %}"> Employee Payments </a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+							<a href="{% url 'Show_asset' %}"><i class="fa fa-cube"></i> <span>Assets</span></a>
+						</li>
+                        <li>
+							<a href="{% url 'Show_document' %}"><i><img src="https://img.icons8.com/ios/26/000000/documents.png"/></i> <span>Documents</span></a>
+						</li>
+                        <li>
+							<a href="{% url 'Show_month_report' %}"><i><img src="https://img.icons8.com/pastel-glyph/26/000000/clipboard-approve--v1.png"/></i> <span>Report</span></a>
+						</li>
+                       
+                        <li>
+							<a href="{% url 'Show_admin' %}"><i><img src="https://img.icons8.com/dotty/30/000000/user.png"/></i> <span>User</span></a>
+						</li>
+                        
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <style>
+            @media print{
+                .header{
+                    display: none;
+                }
+                .sidebar{
+                    display: none;
+                }
+                .content, .content *{
+                    visibility: visible;
+                    left: 0px;
+                    top: 0px;
+                }
+            }
+        </style>
+        <div class="page-wrapper">
+            <div class="content">
+
+                {% block content %}
+
+                {% endblock content %}
+
+
+            </div>
+
+        </div>
+
+
+        {% block popup %}
+        <div id="delete_record" class="modal fade delete-modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <img src="{% static 'Cow/assets/img/sent.png' %} " alt="" width="50" height="46">
+                        <h3>Are you sure want to delete this Record?</h3>
+                        <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+                            <a  href="#" onclick="f1();" class="btn btn-danger" id="delete_a" >
+                            Delete</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock popup %}
+
+
+    </div>
+    <div class="sidebar-overlay" data-reff=""></div>
+
+    {% block javascript %}
+
+    {% endblock javascript %}
+
+    
+    <script src="{% static 'Cow/assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'Cow/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'Cow/assets/js/jquery.slimscroll.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/app.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/dataTables.bootstrap4.min.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/select2.min.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/moment.min.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/bootstrap-datetimepicker.min.js' %} "></script>
+    <script src="{% static 'Cow/assets/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'Cow/assets/js/moment.min.js' %}"></script>
+    <script src="{% static 'Cow/assets/js/jquery.fullcalendar.js' %}"></script>
+    <script src="{% static 'Cow/assets/js/fullcalendar.min.js' %}"></script>
+    <script src="{% static 'Cow/assets/js/chart.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    
+</body>
+
+</html>

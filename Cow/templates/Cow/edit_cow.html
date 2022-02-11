@@ -1,0 +1,86 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Update Cow</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Edit Cow Information</h4>
+    </div>
+</div>
+<form action="" method="POST" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+        <h3 class="card-title">Cow Informations</h3>
+        <div class="row">
+            <div class="col-md-12">
+             
+                <div class="profile-basic">
+                    <div class="row">
+                    {%for fm in form %}
+                    
+                    {% if fm is form.dob or fm is form.brought_date %}
+                    <div class="col-md-6">
+                        <div class="form-group form-focus">
+                            <label class="focus-label">{{fm.label}}</label>
+                            <div class="cal-icon">
+                            {{fm|add_class:"form-control floating datetimepicker"}}
+                            </div>
+                            {{fm.errors}}
+                        </div>
+                    </div>
+             
+                    {% elif fm is form.is_dead or fm is form.is_sold or fm is form.vaccinated %}
+                    <div class="form-group row">
+                        <label class="mr-6 ml-5">{{fm.label}}</label>
+                       
+                            <div class="checkbox">
+                                <label class="ml-1">
+                                    {{fm}} 
+                                </label>
+                            </div>
+                    </div>
+                    
+
+                    {% else %}
+                       
+                    <div class="col-md-6">
+                        <div class="form-group form-focus">
+                            <label class="focus-label">{{fm.label}}</label>
+                            {{fm|add_class:"form-control floating"}}
+                            {{fm.errors}}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center m-t-20">
+            
+            <a class="btn btn-primary submit-btn" href="{% url 'Display_cow' %}" >Cancel</a>
+            <input class="btn btn-primary submit-btn" type="submit" value="Save">
+        </div>
+    </div>
+
+    <script>
+        x = document.getElementById("id_dob").value;
+        y = document.getElementById("id_brought_date").value;
+        if(x != " "){
+            const d = x.split('-')
+            const dob = d[2]+"/"+d[1]+"/"+d[0];
+            $('#id_dob').attr('value',dob);
+        }
+        if(y != " "){
+            const d = y.split('-')
+            const brought_date = d[2]+"/"+d[1]+"/"+d[0];
+            $('#id_brought_date').attr('value',brought_date);
+        }
+    </script>
+  
+    {% endblock content %}

@@ -1,0 +1,270 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %}
+<title>Month Report</title>
+{% endblock title %}
+
+
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message.tags}}!</strong> {{message}} 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+<div class="row">
+    <div class="col-sm-5 col-4">
+        <h4 class="page-title">Month Report </h4>
+    </div>
+    <div class="col-sm-7 col-8 text-right m-b-30">
+        <div class="btn-group btn-group-sm">
+            <a href="{% url 'Print_page' 1%}" class="btn btn-white"><i class="fa fa-save fa-lg"></i> Save as PDF</a>
+            <a href="{% url 'Print_page' 2%}" class="btn btn-white" target="_blank" ><i class="fa fa-print fa-lg"></i> Print</a>
+        </div>
+    </div>
+</div>
+<form method="get">
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">Year</label>
+                <select class="select floating" id="date-dropdown" name="year">
+
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">Month</label>
+                <select class="select floating" name="month">
+                    <option selected value="">Select Month</option>
+                    <option  value='1'>Janaury</option>
+                    <option value='2'>February</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <input type="submit" class="btn btn-success btn-block" value="Search">
+        </div>
+    </div>
+</form>
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .print-container, .print-container * {
+            visibility: visible;
+            
+        }
+        .print-container {
+            position: absolute;
+            left: 0px;
+            top:0px;
+        }
+    }
+</style>
+<div class="print-container">
+    
+    <div style="background-color: #fff; width:230px; padding:3px; border-radius:4px;">
+        <div class="btn-group btn-group-sm">
+            <h4 class="page-title" style="color: rgb(0, 0, 0);">Year:{{year}}</h4>
+            <h4 class="page-title ml-4" style="color: rgb(0, 0, 0);">Month:{{month}}
+        </div>
+    </div>
+    <div class="col-md-12 mt-4">
+        <div class="table-responsive">
+            <h3 class="page-title" style="color:rgb(0, 0, 0); background-color: rgba(246, 229, 204, 0.75); width:max-content">1. Cow Attendance</h3>
+            <table class="table table-striped custom-table mb-0 ">
+                <thead>
+                    <th>S.No</th>
+                    <th class="text-center">Breed</th>
+                    <th class="text-center">Akalu</th>
+                    <th class="text-center">Gadasu</th>
+                    <th class="text-center">Hori</th>
+                    <th class="text-center">Male Calf</th>
+                    <th class="text-center">Female Calf</th>
+                    <th class="text-center">Sold Cow</th>
+                    <th class="text-center">Dead Cow</th>
+                    <th class="text-center">Total</th>
+                </thead>
+                <tbody>
+
+                    {% for count in cow_counts%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-center">{{count.breed.title}}</td>
+                        <td class="text-center">{{count.akalu_count}}</td>
+                        <td class="text-center">{{count.gadasu_count}}</td>
+                        <td class="text-center">{{count.hori_count}}</td>
+                        <td class="text-center">{{count.male_calf_count}}</td>
+                        <td class="text-center">{{count.female_calf_count}}</td>
+                        <td class="text-center">{{count.sold_cow_count}}</td>
+                        <td class="text-center">{{count.dead_cow_count}}</td>
+                        <td class="text-center">{{count.total_count}}</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12 mt-4">
+        <div class="table-responsive">
+            <h3 class="page-title" style="color:rgb(0, 0, 0); background-color: rgba(246, 229, 204, 0.75); width:max-content">2. Gaushala Products Production and Distribution Details</h3>
+            <table class="table table-striped custom-table mb-0 ">
+                <thead>
+                    <th>S.No</th>
+                    <th class="text-center">Product</th>
+                    <th class="text-center">Production(ltr/kg)</th>
+                    <th class="text-center">Sale Quantity</th>
+                    <th class="text-center">Sale Amount</th>
+                    <th class="text-center">Self Use</th>
+                    <th class="text-center">Calf Used Milk</th>
+                    <th class="text-center">Remaining</th>
+                </thead>
+                <tbody>
+                    {% for detail in production_details %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-center">{{detail.product.title}}</td>
+                        <td class="text-center">
+                            {% if detail.production_quantity %}
+                            {{detail.production_quantity}}</td>
+                        {% else %}
+                        --
+                        {% endif %}
+                        <td class="text-center">{% if detail.sale_quantity %}{{detail.sale_quantity}}{% else %}--{% endif %}</td>
+                        <td class="text-center">{% if detail.sale_amount %}{{detail.sale_amount}}{% else %}--{% endif %}</td>
+                        <td class="text-center"> {% if detail.self_use %}{{detail.self_use}}{% else %}--{% endif %}
+                        </td>
+                        <td class="text-center"> {% if detail.calf_use %}{{detail.calf_use}}{% else %}--{% endif %}
+                        </td>
+                        <td class="text-center"> {% if detail.remaining %}{{detail.remaining}}{% else %}--{% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12 mt-4">
+        <div class="table-responsive">
+            <h3 class="page-title" style="color:rgb(0, 0, 0); background-color: rgba(246, 229, 204, 0.75); width:max-content">3. Used Items and Expense Details</h3>
+            <table class="table table-striped custom-table mb-0 ">
+                <thead>
+                    <th>S.No</th>
+                    <th class="text-center">Item</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">Amount</th>
+                </thead>
+                <tbody>
+                    {% for detail in expense_details %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-center">{{detail.item}}</td>
+                        <td class="text-center">
+                            {% if detail.quantity %}
+                            {{detail.quantity}}
+                            {% else %}
+                            --
+                            {% endif %}
+
+                        </td>
+                        <td class="text-center">
+
+                            {% if detail.amount %}
+                            {{detail.amount}}
+                            {% else %}
+                            --
+                            {% endif %}
+
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-12 mt-4">
+        <div class="table-responsive">
+            <h3 class="page-title" style="color:rgb(0, 0, 0); background-color: rgba(246, 229, 204, 0.75); width:max-content">4. Cattle Expense Details:</h3>
+            <table class="table table-striped custom-table mb-0 ">
+                <thead>
+                    <th>S.No</th>
+                    <th class="text-center">Total <br>Cattles</th>
+                    <th class="text-center">This<br>Month<br>Expense</th>
+                    <th class="text-center">Total cost <br>of one<br>cattle <br>(one day)</th>
+                    <th class="text-center">Total cost <br>of all<br>cattles <br>(one day)</th>
+                    <th class="text-center">Total cost <br>of one<br>cattle <br>(this month)</th>
+                    <th class="text-center">Total cost <br>of all<br>cattles <br>(this month)</th>
+                </thead>
+                <tbody>
+                    {% for expense in cow_expense %}        
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-center">{{expense.total_cow}}</td>
+                        <td class="text-center">{{expense.month_expense}}</td>
+                        <td class="text-center">{{expense.one_cow_day_expense}}</td>
+                        <td class="text-center">{{expense.all_cow_day_expense}}</td>
+                        <td class="text-center">{{expense.one_cow_month_expense}}</td>
+                        <td class="text-center">{{expense.month_expense}}</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+
+    let dateDropdown = document.getElementById('date-dropdown');
+
+    let currentYear = new Date().getFullYear();
+    let earliestYear = 2000;
+
+    while (currentYear >= earliestYear) {
+        let dateOption = document.createElement('option');
+        dateOption.text = currentYear;
+        dateOption.value = currentYear;
+        dateDropdown.add(dateOption);
+        currentYear -= 1;
+    }
+
+    var record_id = ''
+    function f2(r_id) {
+        record_id = r_id;
+
+    }
+    function f1() {
+        document.getElementById("delete_a").href = "/admin_dashboard/asset/delete/" + window.record_id + "/"
+    }
+</script>
+{% endblock javascript %}

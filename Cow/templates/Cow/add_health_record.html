@@ -1,0 +1,99 @@
+{% extends 'Cow/dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+<title>Add Cow Health</title>
+{% endblock title %}
+{% block style %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+    }
+</style>
+{% endblock style %}
+        {% block content %}
+        <div class="row">
+            <div class="col-sm-8 col-5">
+                <h4 class="page-title">Add/Update Cow Health</h4>
+            </div>
+            <div class="col-sm-4 col-7 text-right m-b-30">
+                <a href="{% url 'Cow_health_record_list' %}" class="btn btn-primary btn-rounded float-right">Health Record</a>
+            </div>
+        </div>
+
+{% for error in form.non_field_errors  %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> {{ error }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+                    <h4 class="card-title">Add Health Record</h4>
+                  <form action="" method="POST" novalidate>
+                      {% csrf_token %}
+                      
+                      {% for fm in form  %}
+                      {% if fm is form.start_date or fm is form.cured_date %}
+                      <div class="form-group">
+                          <label >{{fm.label}}</label>
+                          <div class="cal-icon">
+                              {{fm|add_class:"form-control datetimepicker"}}
+                          </div>
+                          {{fm.errors}}
+                      </div>
+                      {% else %}
+                      <div class="form-group">
+                        
+                        <label>{{fm.label}} </label> 
+                        {{fm|add_class:"form-control"}}
+                        {{fm.errors}}
+                    </div>
+                    {% endif %}
+                      {% endfor %}
+                          
+                      <button type="submit" class="btn btn-primary m-3">Submit</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+
+   
+
+{% endblock content %}
+
+
+{% block javascript %}
+    <script>
+        $('select').attr('placeholer','select a cow');
+        x = document.getElementById('id_start_date').value;
+        y = document.getElementById('id_cured_date').value;
+        if(x != " "){
+            const d = x.split('-')
+            const start_date = d[2]+"/"+d[1]+"/"+d[0];
+            $('#id_start_date').attr('value',start_date);
+        }
+        if(y != " "){
+            const d = y.split('-')
+            const cured_date = d[2]+"/"+d[1]+"/"+d[0];
+            $('#id_cured_date').attr('value',cured_date);
+        }
+        $(document).ready(function () {
+      $('select').selectize({
+          sortField: 'text'
+      });
+  });
+    </script>
+{% endblock javascript %}
+           
+
+    </div>
+

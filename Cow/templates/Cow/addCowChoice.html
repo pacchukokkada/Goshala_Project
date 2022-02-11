@@ -1,0 +1,15 @@
+{% extends 'Cow/dash_base.html' %}
+
+
+{% block title %}
+<title>Choice</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="card-box">
+    <h4 class="card-title">Please select the type.</h4>
+    <a href="{% url 'Add_cow' 2 %}"><button class="btn btn-primary btn-lg">Calf Register</button></a>
+    <a href="{% url 'Add_cow' 3 %}"><button type="button" class="btn btn-warning btn-lg">Cow Register</button></a>
+</div>
+{% endblock content %}

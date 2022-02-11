@@ -1,0 +1,159 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Salary</title>
+{% endblock title %}
+
+{% block style %}
+<style>
+.errorlist{
+        color:red;
+        list-style: none;
+    }
+.error{
+    border-color: red;
+}
+</style>
+    
+{% endblock style %}
+    
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+    <strong>{{message.tags}}!</strong> {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+{% endfor %}
+{% endif %}
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Employee Salary</h4>
+    </div>
+    <!-- <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Add_feed_stock_entry' %}" class="btn btn-primary btn-rounded float-right"><i
+                class="fa fa-plus"></i> Feed Stock Entry</a>
+    </div> -->
+</div>
+
+
+<h3 class="">Generate Salary Duration</h3>
+{% for error in form.non_field_errors %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> {{ error }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<form action="" method="POST" novalidate>
+    {% csrf_token %}
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">From</label>
+                <div class="cal-icon">
+                    {{form.start_date|add_class:"form-control floating datetimepicker"}}
+                    {{form.start_date.errors}}
+                </div>
+            </div>
+        </div>
+       
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <div class="form-group form-focus select-focus">
+                <label class="focus-label">To</label>
+                <div class="cal-icon">
+                    {{form.end_date|add_class:"form-control floating datetimepicker"}}
+                    {{form.end_date.errors}}
+                </div>
+            </div>
+        </div>
+       
+        <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+            <!-- <a href="#" class="btn btn-success btn-block"> Search </a> -->
+            <input type="submit" class="btn btn-success btn-block" value="Generate">
+        </div>
+        <br>
+        
+
+    </div>
+</form>
+
+<div class="row">
+    {% for salary in sal %}
+  
+    <div class="col-sm-6 col-md-6 col-lg-4">
+        <div class="blog grid-blog" style="background-color: rgba(250, 234, 220, 0.901);">
+            <div class="blog-image">
+                <!-- <a href="blog-details.html"><img class="img-fluid" src="assets/img/blog/blog-02.jpg" alt=""></a> -->
+            </div>
+            <div class="blog-content">
+                <a href="/admin_dashboard/employee/salary/{{salary.start_date}}/{{salary.end_date}}/">
+                <h5 class="">{{salary.start_date}} - {{salary.end_date}}</h5>
+            </a>
+                <div class="blog-info clearfix">
+                    <div class="post-left">
+                    </div>
+                    <div class="post-right"><a onclick="f2(this.id); return false;" id="{{salary.start_date}}_{{salary.end_date}}" href="#" data-toggle="modal" on data-target="#delete_record"><i class="fa fa-trash"></i>Delete</a> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}
+{% block javascript %}
+<script>
+    var record_id = ''
+    var link = ''
+    function f2(r_id) {
+        record_id = r_id;
+        let str = String(record_id)
+        var myArr = str.split("_");
+        const start_date = myArr[0];
+        const end_date = myArr[1];
+        link = "/admin_dashboard/employee/salary/delete/" + start_date + "/" + end_date + "/"
+        console.log(link)
+    }
+    function f1() {
+        console.log("Clicked")
+        document.getElementById('delete_a').href = window.link
+    }
+    x = document.getElementById('id_start_date').value;
+    if(x != " "){
+        const d = x.split('-')
+        const dt = d[2]+"/"+d[1]+"/"+d[0];
+        $('#id_start_date').attr('value',dt);
+    }
+    y = document.getElementById('id_end_date').value;
+    if(y != " "){
+        const d = y.split('-')
+        const dt = d[2]+"/"+d[1]+"/"+d[0];
+        $('#id_end_date').attr('value',dt);
+    }
+//     $('.likebutton').click(function(){
+//     var catid;
+//     catid = $(this).attr("data-catid");
+//     $.ajax(
+//     {
+//         type:"GET",
+//         url: "{% url 'Employee_salary_pay'%}",
+//         data:{
+//                  post_id: catid
+//         },
+//         success: function( data ) 
+//         {
+//             $( '#like'+ catid ).remove();
+//             $('#paid'+ catid).html('Paid');
+//             $( '#message' ).text(data);
+//             $('#msg_display').append('<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>'+data+'!</strong> {{message}} <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>')
+//         }
+//      })
+// });
+</script>
+{% endblock javascript %}

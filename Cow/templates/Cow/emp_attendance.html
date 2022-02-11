@@ -1,0 +1,107 @@
+{% extends 'Cow/dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+<title>Attendance</title>
+{% endblock title %}
+
+        {% block content %}
+        {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message.tags}}!</strong> {{message}} 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">Employee Attendance</h4>
+            </div>
+        </div>
+        <form action="" method="get">
+            <div class="row filter-row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus select-focus">
+                        <label class="focus-label">Date</label>
+                        <div class="cal-icon">
+                        <input type="text" class="form-control floating datetimepicker" name="date">
+                    </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <!-- <a href="#" class="btn btn-success btn-block"> Search </a> -->
+                    <input type="submit" style="border-radius: 4px;" class="btn btn-success btn-block" value="Submit">
+                </div>
+            </div>
+        </form>
+        <div class="row" style="margin-left: auto;">
+            <div class="col-md-8">
+                <div class="card-box">
+                    <h4 class="card-title">Date:{{date}}</h4>
+                    <table>
+    
+                    {% for a in attendance  %}
+                    
+                    <tr>
+                  <form action="{% url 'Add_attendance' a.employee.id %}" method="POST" >
+                        {% csrf_token %}
+                       
+                       <td >  <label class="focus-label">{{a.employee.name}}:</label></td>
+                      <td>
+                        <select name="attendance" class="form-control" required >
+                            <option value="">Select..</option>
+                            <option value="half">Half Day</option>
+                            <option value="full">Full day</option>
+                            <option value="leave">Leave</option>
+                        </select>
+                      </td>
+                      <input type="text" name="year" value="{{year}}" hidden>
+                      <input type="text" name="month" value="{{month}}" hidden>
+                      <input type="text" name="day" value="{{day}}" hidden>
+                     <td> <button type="submit" class="btn btn-primary btn-sm">Done</button></td>
+                       
+                             
+                    
+                    </form>
+                </tr>
+                {% empty %}
+                <h2>All the attendance are taken</h2>
+             <a href="{% url 'Emp_attendance_list' %}">Show attendance list</a>
+                    {%endfor%}
+                    
+                </table>
+                
+                {% if attendance %}
+                <div class="mt-3">
+                    <form action="{% url 'Add_attendance' 0 %}" method="POST" >
+                        {% csrf_token %}
+                        <input type="text" name="attendance" value="full" hidden>
+                        <input type="text" name="year" value="{{year}}" hidden>
+                        <input type="text" name="month" value="{{month}}" hidden>
+                        <input type="text" name="day" value="{{day}}" hidden>
+                        <button type="submit" class="btn btn-primary btn-sm">All FullDay Present</button>
+                    </form>
+                </div>
+        
+                {% endif %}
+                    
+                
+                
+                </div>
+            </div>
+        </div>
+
+   
+
+{% endblock content %}
+
+       
+
+    </div>
+
+</body>
+
+</html>

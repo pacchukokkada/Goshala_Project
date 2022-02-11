@@ -1,0 +1,58 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Add Feed Supplier</title>
+{% endblock title %}
+
+{% block style %}
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+        font-size: 13px;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Add/Update Feed Supplier</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Supplier_list' %}" class="btn btn-primary btn-rounded float-right">Feed Supplier</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title">Enter supplier information</h4>
+            <form action="" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+                <div class="form-group">
+                    <label >{{fm.label}}</label>
+                        {{fm|add_class:"form-control "}}
+                    {{fm.errors}}
+                </div>
+              
+                {% endfor %}
+                <button type="submit" class="btn btn-primary m-3">Submit</button>
+            </form>
+        </div>
+        </div>
+</div>
+
+{% endblock content %}
+
+
+{% block javascript %}
+    <script>
+        document.getElementById('id_address').rows = '4';
+    </script>
+{% endblock javascript %}
+    

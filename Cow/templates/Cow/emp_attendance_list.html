@@ -1,0 +1,97 @@
+{% extends 'Cow/dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+<title>Attendance List</title>
+{% endblock title %}
+
+        {% block content %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">Employee Attendance List</h4>
+            </div>
+        </div>
+        <form action="" method="get">
+            <div class="row filter-row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus">
+                        <label class="focus-label">Employee Name</label>
+                        <input type="text" class="form-control floating" onkeyup="myFunction()" id="myInput">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus">
+                        <label class="focus-label">Date </label>
+                        <div class="cal-icon">
+                        {% render_field attendance.form.attendance_date class="form-control floating datetimepicker" %}
+                    </div>
+                    </div>
+                </div>
+                
+                
+               
+                <div class="col-sm-6 col-md-3">
+                    <input type="submit" class="btn btn-success btn-block" value="Search">
+                </div>
+           
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table" id="myTable">
+                        <thead>
+                            <tr>
+                                <th style="min-width:50px;">Name</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Attendance</th>
+                                <th class="text-center">Edit</th>
+                              
+                        </thead>
+                        <tbody>
+                            
+                            {% for attend in attendance.qs %}
+                               <tr>
+                                    <td>{{attend.employee.name}}</td>
+                                    <td class="text-center">{{attend.attendance_date}}</td>
+    
+                                    <td class="text-center">{{attend.attendance}}</td>
+                                   <td class="text-center"><a href="{% url 'Emp_attendance_update' attend.pk %}"><i class="fa fa-pencil "></i></a></td>
+                            {% endfor %}
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>     
+  
+{% endblock content %}
+
+       
+
+{% block javascript %}
+<script>
+   
+    function myFunction() {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+    </script>
+{% endblock javascript %}

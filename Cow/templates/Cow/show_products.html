@@ -1,0 +1,85 @@
+{% extends 'Cow/dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+<title>Products List</title>
+{% endblock title %}
+
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message.tags}}!</strong> {{message}} 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Our Products</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Add_product' %}" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Products</a>
+    </div>
+</div>
+
+<div class="row">
+    {% for product in products %}
+    <!-- <div class="col-md-4">
+        <div class="card-box">
+            <h4 class="card-title">{{product.title}}</h4>
+            <p>Stock: {{product.stock}} {{product.unit}}</p>
+            {% if product.about %}
+           <p>About: {{product.about}}</p>
+           {% else %}
+           <p>About: N/A</p> 
+           {%endif%}
+           <a href="{% url 'Update_product' product.id %}" class="btn btn-warning">Update</a>
+           <a onclick="f2(this.id); return false;" id="{{product.id}}" class="btn btn-danger" href="#" data-toggle="modal" on data-target="#delete_record"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+        </div>
+    </div> -->
+
+    <div class="col-sm-6 col-md-6 col-lg-4">
+        <div class="blog grid-blog" style="background-color: rgba(250, 234, 220, 0.901);">
+            <div class="blog-image">
+                <!-- <a href="blog-details.html"><img class="img-fluid" src="assets/img/blog/blog-02.jpg" alt=""></a> -->
+            </div>
+            <div class="blog-content">
+                <h3 class="">{{product.title}}</h3>
+                
+                <h5>Stock: {{product.stock}} {{product.unit}}</h5>
+                {% if product.about %}
+               <h5>About: {{product.about}}</h5>
+               {% else %}
+               <h5>About: N/A</h5> 
+               {%endif%}
+                <div class="blog-info clearfix">
+                    <div class="post-left">
+                        <ul>
+                            <a href="{% url 'Update_product' product.id %}"><i class="fa fa-pencil"></i>Edit</a> 
+                        </ul>
+                    </div>
+                    <div class="post-right"><a  aria-disabled="true" onclick="f2(this.id); return false;" id="{{product.id}}" href="#" data-toggle="modal" on data-target="#delete_record"><i class="fa fa-trash"></i>Delete</a> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
+{% block javascript %}
+<script>
+    var record_id = ''
+    function f2(r_id){
+        record_id = r_id;
+
+    }
+    function f1(){
+        document.getElementById("delete_a").href =  "/admin_dashboard/products/delete/"+window.record_id+"/"
+    }
+</script>
+{% endblock javascript %}

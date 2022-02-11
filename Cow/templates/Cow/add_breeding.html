@@ -1,0 +1,106 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Add Breeding</title>
+
+
+{% endblock title %}
+
+{% block style %}
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<div class="row">
+    
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Add/Update Breeding</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Show_breeding' %}" class="btn btn-primary btn-rounded float-right">Breedings</a>
+    </div>
+</div>
+{% for error in form.non_field_errors  %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> {{ error }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<div class="row" style="margin-left: auto;">
+    <div class="col-md-8">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title">Breeding Information</h4>
+            <form action="" method="post" enctype="multipart/form-data" name="breeding_form" novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+
+                {% if fm is form.date %}
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                    <div class="cal-icon">
+                        {{fm|add_class:"form-control datetimepicker"}}
+                    </div>
+                    {{fm.errors}}
+                </div>
+                {% elif fm is form.cow %}
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                        {{fm|add_class:"form-control selecter"}}
+                    {{fm.errors}}
+                </div>
+                {% elif fm is form.stud %}
+                <div id="problem">
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                        {{fm|add_class:"form-control selecter"}}
+                    {{fm.errors}}
+                </div>
+                </div>
+                {% else %}
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                    {{fm|add_class:"form-control"}}
+                    {{fm.errors}}
+                </div>
+                {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary m-3" di>Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var x = document.getElementById('id_date').value;
+    const d = x.split('-');
+    var dt = d[2]+"/"+d[1]+"/"+d[0] 
+    $('#id_date').attr('value',dt);
+    document.getElementById('id_category').onchange = function(){
+        if (this.value == "Natural") {
+            document.getElementById('id_breed').disabled = true;   
+        }
+        else if(this.value == "IVF") {
+            document.getElementById('id_breed').disabled = false;
+            x = document.getElementById('problem')
+            x.remove();
+
+        }
+    }
+    
+    $(document).ready(function () {
+        $('.selecter').selectize({
+            sortField: 'text'
+        });
+        $('')
+    });
+</script>
+{% endblock content %}

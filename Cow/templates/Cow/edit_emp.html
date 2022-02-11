@@ -1,0 +1,101 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>AddCow</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Edit Profile</h4>
+    </div>
+</div>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+        <h3 class="card-title">Employee Informations</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-img-wrap">
+                    {% if pic %}
+                    <img class="inline-block" src="{{pic.url}}" id="blah" alt="user">
+                    {% else %}
+                    <img class="inline-block" src="" id="blah" alt="user">
+                    {% endif %}
+                    <div class="fileupload btn">
+                        <span class="btn-text">edit</span>
+                        <input class="upload" type="file" name="img" onchange="readURL(this);">
+                    </div>
+                </div>
+                <div class="profile-basic">
+                    <div class="row">
+
+                        {% for ef in emp_form  %}
+                        
+                        {% if ef is emp_form.join_date or ef is  emp_form.date_of_birth %}
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">{{ef.label}}</label>
+                                <div class="cal-icon">
+                                    {{ef|add_class:"form-control floating datetimepicker"}}
+                                </div>
+                                {{ef.errors}}
+                            </div>
+                        </div>
+                        {% elif ef is not emp_form.profile_pic %}
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">{{ef.label}}</label>
+                               
+                                    {{ef|add_class:"form-control floating "}}
+                               
+                                {{ef.errors}}
+                            </div>
+                        </div>
+
+                        {% endif %}
+                        {% endfor %}
+
+                      
+                    </div>
+                </div>
+                <div class="text-center m-t-20">
+
+                    <a class="btn btn-primary submit-btn" href="{% url 'Dashboard' %}">Cancel</a>
+                    <input class="btn btn-primary submit-btn" type="submit" value="Save">
+                </div>
+            </div>
+</form>
+
+<script>
+    x = document.getElementById("id_join_date").value;
+    y = document.getElementById("id_date_of_birth").value;
+    if(x != " "){
+            const d = x.split('-')
+            const join_date = d[2]+"/"+d[1]+"/"+d[0];
+            $('#id_join_date').attr('value',join_date);
+    }
+    if(y != " "){
+            const d = y.split('-')
+            const date_of_birth = d[2]+"/"+d[1]+"/"+d[0];
+            $('#id_date_of_birth').attr('value',date_of_birth);
+    }
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+{% endblock content %}

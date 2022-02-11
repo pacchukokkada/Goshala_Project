@@ -1,0 +1,126 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Salary</title>
+{% endblock title %}
+
+{% block content %}
+<div id="msg_display"></div>
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Employee Salary Details</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Employee_salary' %}" class="btn btn-primary btn-rounded float-right"> Back</a>
+    </div>
+</div>
+
+    
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <p>Form:{{start_date}}   TO:{{end_date}}</p>
+            <table class="table table-striped custom-table mb-0 ">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th class="text-center">Salary</th>
+                        <th class="text-center">Attendance</th>
+                        <th class="text-center">Payable Salary</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for salary in emp_salaries  %}
+                    <tr>
+                        <td>
+                            <strong>{{salary.employee.name}}</strong>
+                        </td>
+                        <td class="text-center">{{salary.employee.salary}}</td>
+                        <td class="text-center">{{salary.attendance}}</td>
+                        <td class="text-center">{{salary.payable_salary}}</td>
+                        <td id="paid{{salary.id}}" class="text-center">
+                            
+                            {% if salary.is_paid == False %}
+                            <a class="likebutton" id="like{{salary.id}}" href="#" data-catid="{{ salary.id }}" class="btn btn-sm btn-primary">Pay</a>
+                            {% else %}
+                             Paid
+                            {% endif %}  
+                                         
+                        </td>
+                        <td class="text-right">
+                            <div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    
+                                    <a class="dropdown-item" id="unpaid{{salary.id}}" href="#" data-catid="{{ salary.id }}" class="dropdown-item"><i><img src="https://img.icons8.com/ios-glyphs/18/000000/undo.png"/></i> Unpaid</a>
+                                   
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+{% block javascript %}
+<script>
+    var record_id = ''
+    function f2(r_id){
+        record_id = r_id;
+
+    }
+    function f1(){ 
+        document.getElementById("delete_a").href =  "/admin_dashboard/employee/salary/delete/"+window.record_id+"/"
+    }
+    //Pay
+    $('.likebutton').click(function(){
+    var catid;
+    catid = $(this).attr("data-catid");
+    $.ajax(
+    {
+        type:"GET",
+        url: "{% url 'Employee_salary_pay'%}",
+        data:{
+                 post_id: catid
+        },
+        success: function( data ) 
+        {
+            $( '#like'+ catid ).remove();
+            $('#paid'+ catid).html('Paid');
+            $( '#message' ).text(data);
+            $('#msg_display').append('<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>'+data+'!</strong> {{message}} <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>')
+        }
+     })
+});
+
+//Unpaid
+$('.dropdown-item').click(function(){
+    var catid;
+    catid = $(this).attr("data-catid");
+    $.ajax(
+    {
+        type:"GET",
+        url: "{% url 'Employee_salary_unpaid'%}",
+        data:{
+                 post_id: catid
+        },
+        success: function( data ) 
+        {
+            $('#paid'+ catid).html('Pay');
+            $( '#message' ).text(data);
+            location.reload(true)
+            $('#msg_display').append('<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>'+data+'!</strong> {{message}} <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>')
+        }
+     })
+});
+</script>
+{% endblock javascript %}

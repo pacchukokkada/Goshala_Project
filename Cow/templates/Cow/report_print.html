@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %} 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Month Report</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/bootstrap.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/font-awesome.min.css' %}  ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/bootstrap-datetimepicker.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/style.css' %} ">
+    <link rel="stylesheet" type="text/css" href=" {% static 'Cow/assets/css/dataTables.bootstrap4.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/fullcalendar.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/selectize.bootstrap3.min.css' %}">
+    <style>
+        .text-center{
+            text-align: center;
+        }
+        .text-right{
+            text-align: right;
+        }
+        .text-left{
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <center><h3>KAMADENU GOSHALE KOKKADA</h3></center> 
+
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <h3 class="page-title">1.Cattle Attendance List:</h3>
+            <table border="1" cellpadding="5" cellspacing="5" width="800px" style="border-collapse:collapse;">
+                <thead>
+                    <th>Sl.No</th>
+                    <th class="text-center">Breed</th>
+                    <th class="text-center">Cow</th>
+                    <th class="text-center">Hiefer</th>
+                    <th class="text-center">Bull</th>
+                    <th class="text-center">Male Calf</th>
+                    <th class="text-center">Female Claf</th>
+                    <th class="text-center">Sold Cattles</th>
+                    <th class="text-center">Dead Cattles</th>
+                    <th class="text-center">Total</th>
+                </thead>
+                <tbody>
+
+                    {% for count in cow_counts%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-center">{{count.breed.title}}</td>
+                        <td class="text-center">{{count.akalu_count}}</td>
+                        <td class="text-center">{{count.gadasu_count}}</td>
+                        <td class="text-center">{{count.hori_count}}</td>
+                        <td class="text-center">{{count.male_calf_count}}</td>
+                        <td class="text-center">{{count.female_calf_count}}</td>
+                        <td class="text-center">{{count.sold_cow_count}}</td>
+                        <td class="text-center">{{count.dead_cow_count}}</td>
+                        <td class="text-center">{{count.total_count}}</td>
+
+                    </tr>
+
+                    {% endfor %}
+                   
+                   
+               
+                </tbody>
+            </table>
+            {% for count in cow_expense %}
+            <p>Toral Number of cattles: {{count.total_cow}} </p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <h3 class="page-title">2.Goshala Products and Transactions:</h3>
+            <table border="1" cellpadding="5" cellspacing="5" width="800px" style="border-collapse:collapse;">
+                <thead>
+                    <tr>
+                    <th rowspan="2">Sl.No</th>
+                    <th rowspan="2" class="text-center">Product</th>
+                    <th rowspan="2" class="text-center">Production<br>(ltr/kg)</th>
+                    <th colspan="2" class="text-center">Sale</th>
+                    <th rowspan="2" class="text-center">Self Usage</th>
+                    <th rowspan="2" class="text-center">Calf Usage</th>
+                    <th rowspan="2" class="text-center">Ramaining<br>(ltr/kg)</th>
+                </tr>
+                <tr>
+                    <th>(ltr/kg)</th>
+                    <th>Amount(Rs)</th>                
+                </tr>
+                </thead>
+                <tbody>
+                    {% for detail in production_details %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-center">{{detail.product.title}}</td>
+                        <td class="text-center">
+                            {% if detail.production_quantity %}
+                            {{detail.production_quantity}}</td>
+                        {% else %}
+                        --
+                        {% endif %}
+                        <td class="text-center">{{detail.sale_quantity}}</td>
+                        <td class="text-center">{{detail.sale_amount}}</td>
+                        <td class="text-center"> {% if detail.self_use %}{{detail.self_use}}{% else %}--{% endif %}
+                        </td>
+                        <td class="text-center"> {% if detail.calf_use %}{{detail.calf_use}}{% else %}--{% endif %}
+                        </td>
+                        <td class="text-center"> {% if detail.remaining %}{{detail.remaining}}{% else %}--{% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <h3 class="page-title">3. Brought Items and Expenses:</h3>
+            <table border="1" cellpadding="5" cellspacing="5" width="800px" style="border-collapse:collapse;">
+                <thead>
+                    <th>Sl.No</th>
+                    <th class="text-center">Item</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">Amount(Rs)</th>
+                </thead>
+                <tbody>
+                    {% for detail in expense_details %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-center">{{detail.item}}</td>
+                        <td class="text-center">
+                            {% if detail.quantity %}
+                            {{detail.quantity}}
+                            {% else %}
+                            --
+                            {% endif %}
+
+                        </td>
+                        <td class="text-center">
+
+                            {% if detail.amount %}
+                            {{detail.amount}}
+                            {% else %}
+                            --
+                            {% endif %}
+
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <h3 class="page-title">4. Cattle Expense Details:</h3>
+            <table border="1" cellpadding="5" cellspacing="5" width="800px" style="border-collapse:collapse;">
+                <thead>
+                    <th>Sl.no</th>
+                    <th class="text-center">Total <br>Cattles</th>
+                    <th class="text-center">This<br>Month<br>Expense</th>
+                    <th class="text-center">Total cost <br>of one<br>cattle <br>(one day)</th>
+                    <th class="text-center">Total cost <br>of all<br>cattles <br>(one day)</th>
+                    <th class="text-center">Total cost <br>of one<br>cattle <br>(this month)</th>
+                    <th class="text-center">Total cost <br>of all<br>cattles <br>(this month)</th>
+                </thead>
+                <tbody>       
+                    
+                    {% for expense in cow_expense %}        
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-center">{{expense.total_cow}}</td>
+                        <td class="text-center">{{expense.month_expense}}</td>
+                        <td class="text-center">{{expense.one_cow_day_expense}}</td>
+                        <td class="text-center">{{expense.all_cow_day_expense}}</td>
+                        <td class="text-center">{{expense.one_cow_month_expense}}</td>
+                        <td class="text-center">{{expense.month_expense}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+    window.onload = window.print();
+</script>
+</body>
+</html>
+

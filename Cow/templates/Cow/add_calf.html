@@ -1,0 +1,122 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>AddCow</title>
+{% endblock title %}
+
+{% block style %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+        font-size: 13px;
+    }
+</style>
+{% endblock style %}
+
+{% block content %} 
+
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Rigister calf</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Display_cow' %}" class="btn btn-primary btn-rounded float-right">Cattles</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title">Enter cow/calf information</h4>
+            <form action="" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                
+                {% for fm in form  %}
+                <div class="form-group">
+                    <label >{{fm.label}}</label>
+                   
+                    {% if fm is form.dob %}
+                    <div class="cal-icon">
+                    {{fm|add_class:"form-control datetimepicker"}}
+                    </div>
+                    {% else %}
+                    {{fm|add_class:"form-control"}}
+                    {% endif %}             
+                    {{fm.errors}}
+                </div>
+                {% endfor %}
+                    
+               
+               
+              
+                <button type="submit" class="btn btn-primary m-3">Submit</button>
+            </form>
+        </div>
+        </div>
+</div>
+
+<script type="text/javascript">
+// document.getElementById('id_dob').type = 'date';
+    // $(document).on('submit','#add_breed',function(e){
+    //     e.preventDefault();
+    // });
+    // document.getElementById('id_brought_date').type = 'date';
+    
+</script>
+{% endblock content %}
+
+{% block popup %}
+
+<div id="delete_employee" class="modal fade " role="dialog">
+    <div class="modal-dialog" >
+        <div class="modal-content modal-md">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Breed</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+               <form method="POST" >
+                   {% csrf_token %}
+                <div class="form-group">
+                   <label for="">Breed Name</label>
+                   <input type="text" name="name" id="breed_name" class="form-control" required>
+                  </div>
+                  <div class="m-t-20 text-center">
+                    <button id="submit" class="btn btn-primary submit-btn">Create Breed</button>
+                </div>
+               </form>
+                </div>
+            </div>
+        </div>
+</div>
+
+{% endblock popup %}
+
+
+{% block javascript %}
+<script>
+     $('document').ready(function(){
+        $('#submit').on('click',function(){
+            $breed = $('#breed_name').val();
+            $.ajax({
+                type:"POST",
+                url:"{%url 'Add_breed'%}",
+                data :{
+                    breed_name:$breed,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+            });
+        });
+        $('select').selectize({
+                sortField: 'text'
+        });
+     });
+</script>
+   
+{% endblock javascript %}
+    

@@ -1,0 +1,72 @@
+{% extends 'Cow/dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+<title>Inbox</title>
+{% endblock title %}
+
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message.tags}}!</strong> {{message}} 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endfor %}
+{%endif%}
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title">Inbox</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card-box">
+            
+            <div class="email-content">
+                <div class="table-responsive">
+                    <table class="table table-inbox table-hover">
+                        <thead>
+                            <th>Name</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th class="text-right">Seen</th>
+                        </thead>
+                        <tbody>
+                            
+                            {% for msg in inbox %}
+                            <a href="">
+                            <tr class="{% if not msg.seen %}unread{% endif %}" id="{{msg.id}}" onclick="f2(this.id); return false;">
+                                <td class="name">{{msg.name}}</td>
+                                <td class="subject">{{msg.subject}}</td>
+                               
+                                <td class="mail-date">{{msg.date}}</td>
+                                <td class="text-right">{% if msg.seen %} <i class="fa fa-check text-success"></i>{% endif %}</td>
+                            </tr>
+                        </a>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    var record_id = ''
+    function f2(r_id){
+        record_id = r_id;
+        window.location = "/admin_dashboard/inbox/view-message/"+record_id+"/"
+    }
+    function f1(){
+        document.getElementById("delete_a").href =  "/admin_dashboard/feed/delete/"+window.record_id+"/"
+    }
+</script>
+{% endblock javascript %}

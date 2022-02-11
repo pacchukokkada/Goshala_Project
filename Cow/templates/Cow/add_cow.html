@@ -1,0 +1,122 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>AddCow</title>
+{% endblock title %}
+
+{% block style %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+        font-size: 13px;
+    }
+</style>
+{% endblock style %}
+
+{% block content %} 
+
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Rigister Cattle</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Display_cow' %}" class="btn btn-primary btn-rounded float-right">Cattles</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title">Enter cow/calf information</h4>
+            <form action="" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label >Name</label>
+                    {{form.name|add_class:"form-control "}}
+                    {{form.name.errors}}
+                </div>
+                <div class="form-group">
+                    <label >Tag Number</label>
+                    {{form.tag_number|add_class:"form-control "}}
+                    {{form.tag_number.errors}}
+                </div>
+                <div class="form-group">
+                    <label >Gender</label>
+                    {{form.gender|add_class:"form-control "}}
+                    {{form.gender.errors}}
+                </div>
+                <div class="form-group">
+                    <label >Breed &nbsp;<a href="{% url 'Add_breed_ajax' %}" onclick="return showAddPopup(this);"> Add New Breed</a></label>
+                    {{form.breed|add_class:"form-control "}}
+                    {{form.breed.errors}}
+                </div>
+                <div class="form-group">  
+                    <label >Age</label>        
+                    <div class="row">
+                    {% for fm in age_form  %}
+                    <div class="col-4">
+                    <div class="form-group form-focus">
+                        <label class="focus-label">{{fm.label}}</label>
+                        {{fm|add_class:"form-control floating "}}
+                        {{fm.errors}}
+                    </div>
+                    </div>
+                    {% endfor %}
+                    </div>  
+                </div>  
+                <div class="form-group">
+                    <label >Brought From</label>
+                        {{form.brought_from|add_class:"form-control "}}
+                        {{form.brought_from.errors}}
+                </div>
+                <div class="form-group">
+                    <label >Brought Date</label>
+                    <div class="cal-icon">
+                            {{form.brought_date|add_class:"form-control datetimepicker"}}
+                    </div>
+                        {{form.brought_date.errors}}
+                </div>
+                <div class="form-group">
+                    <label >Status</label>
+                        {{form.status|add_class:"form-control "}}
+                        {{form.status.errors}}
+                </div>
+                <div class="form-grop">
+                    <label class="focus-label">Vaccinated</label>
+                  {{form.vaccinated|add_class:"ml-2"}}
+                    {{form.vaccinated.errors}}
+                </div>
+              
+                <button type="submit" class="btn btn-primary m-3">Submit</button>
+            </form>
+        </div>
+        </div>
+</div>
+
+<script type="text/javascript">
+// document.getElementById('id_dob').type = 'date';
+    // $(document).on('submit','#add_breed',function(e){
+    //     e.preventDefault();
+    // });
+    // document.getElementById('id_brought_date').type = 'date';
+    function showAddPopup(triggeringLink) {
+    var name = triggeringLink.id.replace(/^add_/, '');
+    href = triggeringLink.href;
+    var win = window.open(href, name, 'height=700,width=500,resizable=yes,scrollbars=yes');
+    win.focus();
+    return false;
+    }
+function closePopup(win, newID, newRepr, id) {
+        $(id).append('<option value=' + newID + ' selected >' + newRepr + '</option>')
+        win.close();
+    }
+</script>
+{% endblock content %}
+
+    

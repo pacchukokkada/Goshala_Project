@@ -1,0 +1,156 @@
+{% extends 'Cow/dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+<title>Cow Health</title>
+{% endblock title %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message.tags}}!</strong> {{message}} 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+        <div class="row">
+            <div class="col-sm-8 col-5">
+                <h4 class="page-title">Cow Health Records</h4>
+            </div>
+            <div class="col-sm-4 col-7 text-right m-b-30">
+                <a href="{% url 'Cow_health_record_add' %}" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i>Add Health Record</a>
+            </div>
+        </div>
+        <form action="" method="get">
+            <div class="row filter-row">
+                
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                        <label class="focus-label">Cow Name</label>
+                        <input type="text" class="form-control floating" onkeyup="myFunction(0)" id="myInput1">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus ">
+                        <label class="focus-label">Disease</label>
+                        <!-- <input type="text" class="form-control floating"> -->
+                        <input type="text" class="form-control floating" onkeyup="myFunction(3)" id="myInput2">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus ">
+                        <label class="focus-label">Doctor</label>
+                        <!-- <input type="text" class="form-control floating"> -->
+                        <input type="text" class="form-control floating" onkeyup="myFunction(4)" id="myInput3">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus select-focus">
+                        <label class="focus-label">From</label>
+                        <div class="cal-icon">
+                            <input name="start_date" class="form-control floating datetimepicker" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus select-focus">
+                        <label class="focus-label">To</label>
+                        <div class="cal-icon">
+                            <input name="end_date" class="form-control floating datetimepicker" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <!-- <a href="#" class="btn btn-success btn-block"> Search </a> -->
+                    <input type="submit" class="btn btn-success btn-block" value="Search">
+                </div>
+            
+            </div>
+            </form>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-box">
+                <div class="table-responsive">
+                    <table class="table table-inbox table-hover" id="myTable">
+                        <thead>
+                            <tr>
+                                <th style="min-width:50px;">Name</th>
+                                <th class="text-center">Start Date</th>
+                                <th class="text-center">Cured Date</th>
+                                <th class="text-center">Disease</th>
+                                <th class="text-center">Doctor</th>
+                              
+                        </thead>
+                        <tbody>
+                            
+                            {% for health in cow_health %}
+                               <tr id="{{health.id}}" onclick="f2(this.id); return false;" {% if not health.cured_date %}style="background-color: rgba(255, 0, 0, 0.25);" {% else %} style="background-color: rgba(0, 255, 0, 0.25);"{% endif %}>
+                                    <td><strong>{{health.cow.name}}</strong></td>
+                                    <td class="text-center">{{health.start_date}}</td>
+                                    <td class="text-center">
+                                        
+                                        {% if health.cured_date %}
+                                        {{health.cured_date}}
+                                        {% else %}
+                                        Not cured yet!
+                                        {% endif %}
+                                            
+                                        </td>
+                                    <td class="text-center">{{health.disease}}</td>
+                                    <td class="text-center">{% if health.doctor %}{{health.doctor}}{% else %}N/A{% endif %}</td>
+                            {% endfor %}
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>     
+  
+{% endblock content %}
+
+       
+
+{% block javascript %}
+<script>
+   
+    function myFunction(td_value) {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      if(td_value === 0){
+        input = document.getElementById("myInput1");
+      }
+      else if(td_value === 3) {
+        input = document.getElementById("myInput2");
+      }
+      else if(td_value == 4) {
+        input = document.getElementById("myInput3");
+      }
+      console.log(input);
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[td_value];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+    var record_id = ''
+    function f2(r_id){
+        record_id = r_id;
+        window.location = "/admin_dashboard/cow/health/details/"+record_id+"/"
+    }
+    </script>
+{% endblock javascript %}

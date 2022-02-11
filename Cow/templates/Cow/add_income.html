@@ -1,0 +1,77 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Add Income</title>
+
+
+{% endblock title %}
+
+{% block style %}
+<style>
+    .errorlist {
+        color: red;
+        list-style: none;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-8 col-5">
+        <h4 class="page-title">Add/Update Income</h4>
+    </div>
+    <div class="col-sm-4 col-7 text-right m-b-30">
+        <a href="{% url 'Show_income' %}" class="btn btn-primary btn-rounded float-right">Incomes</a>
+    </div>
+</div>
+
+{% for error in form.non_field_errors  %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> {{ error }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+<div class="row" style="margin-left: auto;">
+    <div class="col-md-8">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title">Income Information</h4>
+            <form action="" method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+                
+                {% if fm is form.date %}
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                    <div class="cal-icon">
+                     {{fm|add_class:"form-control datetimepicker"}}
+                    </div>
+                    {{fm.errors}}
+                </div>
+                {% else %}
+                <div class="form-group m-3">
+                    <label>{{fm.label}} </label>
+                    {{fm|add_class:"form-control"}}
+                    {{fm.errors}}
+                </div>
+                {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary m-3">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    x = document.getElementById('id_date').value;
+    if(x != " "){
+        const d = x.split('-')
+        const dt = d[2]+"/"+d[1]+"/"+d[0];
+        $('#id_date').attr('value',dt);
+    }
+
+</script>
+{% endblock content %}

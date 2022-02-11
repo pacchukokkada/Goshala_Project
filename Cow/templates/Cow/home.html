@@ -1,0 +1,18 @@
+{% extends 'Cow/dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+<title>Cows</title>
+{% endblock title %}
+
+        {% block content %}
+       
+    <h1> Welcome to Kamadenu Gaushala</h1>
+    <a href="{% url 'Dashboard' %}" class="btn btn-primary">Admin Dashboard</a>
+    <li><a href="{% url 'Emp_attendance'  %}">Attendance</a></li>
+
+  
+{% endblock content %}
+
+       
+

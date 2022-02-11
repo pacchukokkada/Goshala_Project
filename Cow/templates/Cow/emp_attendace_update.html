@@ -1,0 +1,52 @@
+{% extends 'Cow/dash_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+<title>Cows</title>
+{% endblock title %}
+
+        {% block content %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">Employee Attendance List</h4>
+            </div>
+        </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+                <h3 class="card-title"> Name:{{attendance.employee.name}} <br>
+                    Date:{{attendance.attendance_date}}</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                       
+                        <div class="profile-basic">
+                            <div class="row">
+                            {%for fm in form %}
+                                <div class="col-md-6">
+                                    <div class="form-group form-focus">
+                                       
+                                        <label class="focus-label">{{fm.label}}</label>
+                                        {{fm|add_class:"form-control floating"}}
+                                        {{fm.errors}}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center m-t-20">
+                    
+                    <a class="btn btn-primary submit-btn" href="{% url 'Emp_attendance_list' %}" >Cancel</a>
+                    <input class="btn btn-primary submit-btn" type="submit" value="Save">
+                </div>
+            </div>
+{% endblock content %}
+
+       
+
+    </div>
+
+</body>
+
+</html>

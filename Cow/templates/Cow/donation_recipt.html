@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %} 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/bootstrap.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/font-awesome.min.css' %}  ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/bootstrap-datetimepicker.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/style.css' %} ">
+    <link rel="stylesheet" type="text/css" href=" {% static 'Cow/assets/css/dataTables.bootstrap4.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/fullcalendar.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/selectize.bootstrap3.min.css' %}">
+</head>
+<style>
+    .text-center{
+        text-align: center;
+    }
+    .text-right{
+        text-align: right;
+    }
+    .text-left{
+        text-align: left;
+    }
+    p{
+        font-size: 15px;
+    }
+</style>
+<body>
+       
+        <table border="1" cellpadding="5" cellspacing="5" width="800px" style="border-collapse:collapse;">
+        <tr>
+            <td class="text-center" colspan="6" > <h1> KAMADHENU Goshala</h1></td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <p>Mr/Mrs {{donar_name}} kindly donated {{amount}} rupees to our goshala. </p>
+                <p>Thank you,</p>
+                <p>date: {{date}}</p>
+            </td>
+        </tr>
+       
+
+
+
+    </table>
+    <script>
+        window.onload = window.print();
+    </script>
+</body>
+
+</html>

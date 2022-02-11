@@ -1,0 +1,50 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Add Breed</title>
+{% endblock title %}
+
+{% block style %}
+<style>
+    .errorlist{
+        color: red;
+    }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="page-title"> RegisterBreed</h4>
+    </div>
+</div>
+
+<div class="row" style="margin-left: auto;">
+    <div class="col-md-8">
+        <div class="card-box" style="background-color: rgba(250, 234, 220, 0.701);">
+            <h4 class="card-title"> Breed information</h4>
+            <form action="" method="post"  novalidate>
+                {% csrf_token %}
+                {% for fm in form %}
+
+                <div class="form-group row">
+                    <label class ="col-lg-3 col-form-label">{{fm.label}} </label>
+                    <div class="col-lg-9">
+                    {{fm|add_class:"form-control"}}
+                    {{fm.errors}}
+                     </div>
+                   
+                </div>
+               {% endfor %}
+                <button type="submit" class="btn btn-primary m-3">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("id_about").rows = "6";
+    document.getElementById("id_about").cols = "10";
+</script>
+{% endblock content %}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %} 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/bootstrap.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/font-awesome.min.css' %}  ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/bootstrap-datetimepicker.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/style.css' %} ">
+    <link rel="stylesheet" type="text/css" href=" {% static 'Cow/assets/css/dataTables.bootstrap4.min.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/fullcalendar.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Cow/assets/css/selectize.bootstrap3.min.css' %}">
+</head>
+<style>
+    .text-center{
+        text-align: center;
+    }
+    .text-right{
+        text-align: right;
+    }
+    .text-left{
+        text-align: left;
+    }
+</style>
+<body>
+       
+        <table border="1" cellpadding="5" cellspacing="5" width="800px" style="border-collapse:collapse;">
+        <tr>
+            <td class="text-center" colspan="6" >S.K.D.R.D.P (R) Dharmasthala</td>
+        </tr>
+        <tr>
+            <td class="text-center" colspan="6">KAMADENU GOSHALA <br>
+                Hallingeri, kokkada- 574198 <br>
+                Tel: +91 9740584631 E-mail:examplw@gmail.com <br>
+                GSTN:575945657463 
+            </td>
+           
+        </tr>
+        <tr>
+            <td class="text-center" colspan="6">
+                Date:{{date}}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <table cellspacing="5" width="600px">
+                    <tr>
+                        <td>Billed to: {{billed_to}} </td>
+                        <td>Shipped to: {{shipped_to}}</td>
+                    </tr>
+                    <tr>
+                        <td>  Name: {{name}}         </td>
+                        <td>  Name: {{ship_name}}         </td>
+                    </tr>
+                    <tr>
+                        <td>Address: {{address}}    </td>
+                        <td>Address: {{ship_address}}    </td>
+                    </tr>
+                    <tr>
+                        <td> State code/ 29</td>
+                        <td> State code/ 29</td>
+                    </tr>
+                    <tr>
+                        <td> GSTN: {{gstn}}</td>
+                        <td> GSTN: {{ship_gstn}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center" >Sl.No</td>
+            <td class="text-center" >Desciption of Goods</td>
+            <td class="text-center" >HSN</td>
+            <td class="text-center" >Unit</td>
+            <td class="text-center" >Rate</td>
+            <td class="text-center" >Amount</td>
+        </tr>
+        
+        {% for product in products %}
+        <tr>
+            <td class="text-center" >{{forloop.counter}}</td>
+            <td class="text-center" >{{product.product.title}}</td>
+            <td class="text-center" >{{product.hsn}}</td>
+            <td class="text-center" >{{product.unit}}</td>
+            <td class="text-center" >{{product.rate}}</td>
+            <td class="text-center" >{{product.amount}}</td>
+        </tr>
+        {% endfor %}
+            
+       
+        <tr>
+            <td class="text-right"  colspan="5">SUB TOTAL</td>
+            <td class="text-center">{{sub_total}}</td>
+        </tr>
+        <tr>
+            <td class="text-center">Less</td>
+            <td class="text-right" colspan="4">Discount</td>
+            <td class="text-center">{{discount}}</td>
+        </tr>
+        <tr>
+            <td class="text-right" colspan="5">TAXABLE AMOUNT</td>
+            <td class="text-center">{{taxable_value}}</td>
+        </tr>
+        <tr>
+            <td class="text-right" colspan="5">ADD: CGST % </td>
+            <td class="text-center">{{cgst}}</td>
+        </tr>
+        <tr>
+            <td class="text-right" colspan="5">ADD : SGST % </td>
+            <td class="text-center">{{sgst}}</td>
+        </tr>
+        <tr>
+            <td class="text-right" colspan="5">IGST %</td>
+            <td class="text-center">{{igst}}</td>
+        </tr>
+        <tr>
+            <td class="text-right" colspan="5">Tax Amount</td>
+            <td class="text-center">{{tax_amount}}</td>
+        </tr>
+        <tr>
+            <td class="text-right" colspan="5">Total Amount After Tax</td>
+            <td class="text-center">{{total_amount}}</td>
+        </tr>
+        <tr>
+            <td class="text-left" colspan="6">Total invoice Amount in words: </td>
+        </tr>
+        <tr>
+            <td class="text-center" colspan="6">{{tatal_amount_in_words}} Rupees only.</td>
+        </tr>
+        <tr>
+            <td class="text-center" colspan="6"> Computer generated invoice(signeture not required).</td>
+        </tr>
+        <tr>
+            <td class="text-center" colspan="6">E&OE</td>
+        </tr>
+
+
+
+    </table>
+    <script>
+        window.onload = window.print();
+    </script>
+</body>
+
+</html>

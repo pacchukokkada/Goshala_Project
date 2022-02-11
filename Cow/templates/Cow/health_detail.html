@@ -1,0 +1,149 @@
+{% extends 'Cow/dash_base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Health Detail {{main_health_detail.cow.name}}</title>
+{% endblock title %}
+
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags}} alert-dismissible fade show" role="alert">
+        <strong>{{message.tags}}!</strong> {{message}} 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+<div class="row">
+    <div class="col-sm-7 col-6">
+        <h4 class="page-title">{{main_health_detail.cow.name}} Health Details</h4>
+    </div>
+
+   
+</div>
+<div class="card-box profile-header">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="profile-view">
+                
+               
+                       
+                        <div class="col-md-7">
+                            <ul class="personal-info">
+                                <li>
+                                    <span class="title">Disease:</span>
+                                    <span class="text">{{main_health_detail.disease}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">Satrt Date:</span>
+                                    <span class="text">{{main_health_detail.start_date}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">Cured Date:</span>
+                                    <span class="text"> 
+                                    {% if main_health_detail.cured_date == None  %}
+                                        N/A
+                                    {% else %}
+                                    {{main_health_detail.cured_date}}
+                                    {% endif %}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="title">Docotr:</span>
+                                    <span class="text">
+                                    {% if main_health_detail.doctor == None  %}
+                                        N/A
+                                    {% else %}
+                                    {{main_health_detail.doctor}}
+                                    {% endif %}
+                                        </span>
+                                </li>
+                                <li>
+                                    <span class="title">Medicine:</span>
+                                    <span class="text">
+                                        {% if main_health_detail.medicine == None  %}
+                                        N/A
+                                    {% else %}
+                                    {{main_health_detail.medicine}}
+                                    {% endif %}
+                                    </span>
+                                </li>
+                            </ul>
+                            <a href="{% url 'Cow_health_update' main_health_detail.id %}" class="btn btn-warning"><i class="fa fa-pencil mr-2"></i>Edit</a>
+                            <a onclick="f2(this.id); return false;" id="{{main_health_detail.id}}" class="btn btn-danger" href="#" data-toggle="modal" on data-target="#delete_record"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+
+                        </div>
+                    </div>
+                                     
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-7 col-6 mt-4">
+        <h4 class="page-title" style="color: rgb(0, 0, 0); background-color: rgb(246, 210, 162); width: max-content;">{{main_health_detail.cow.name}} Other Health Details</h4>
+    </div>
+</div>
+
+{% for health_detail in all_health_details %}
+
+<div class="card-box ">
+    <div class="row">
+       
+        
+
+                        <div class="col-md-7">
+                        <ul class="personal-info" style="list-style: none;">
+                                <li>
+                                    <span class="title">Disease:</span>
+                                    <span class="text">{{health_detail.disease}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">Satrt Date:</span>
+                                    <span class="text">{{health_detail.start_date}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">Cured Date:</span>
+                                    <span class="text"> {{health_detail.cured_date}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">Docotr:</span>
+                                    <span class="text">{{health_detail.doctor}}</span>
+                                </li>
+                                <li>
+                                    <span class="title">Medicine:</span>
+                                    <span class="text">{{health_detail.medicine}}</span>
+                                </li>
+                            </ul>
+                            <a href="{% url 'Cow_health_update' health_detail.id %}" class="btn btn-warning">Edit</a>
+                            <a onclick="f2(this.id); return false;" id="{{health_detail.id}}" class="btn btn-danger" href="#" data-toggle="modal" on data-target="#delete_record"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+
+                        </div>
+                    </div>
+                                     
+        </div>
+{% empty %} 
+<div class="col-md-12">
+    <div class="card-box"> 
+<p>No other Health Records..!<p>
+
+</div>
+</div>
+{% endfor %}
+    
+{% endblock content %}
+{% block javascript %}
+
+<script>
+    var record_id = ''
+    function f2(r_id){
+        record_id = r_id;
+
+    }
+    function f1(){
+        document.getElementById("delete_a").href =  "/admin_dashboard/cow/health/delete/"+window.record_id+"/"
+    }
+</script>
+{% endblock javascript %}
